@@ -15,6 +15,7 @@ $checkNd = query("SELECT MAX(nd) As 'MAX_Value' FROM suratkeluar");
 $checkPbkm = query("SELECT MAX(pbk_m) As 'MAX_Value' FROM suratkeluar");
 $checkVerbal = query("SELECT MAX(verbal) As 'MAX_Value' FROM suratkeluar");
 $checkLhpt = query("SELECT MAX(lhpt) As 'MAX_Value' FROM suratkeluar");
+$getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0];
 
 date_default_timezone_set('Asia/Jakarta');
 if(isset($_POST['tambah'])) {
@@ -76,52 +77,7 @@ if(isset($_POST['tambah'])) {
 
           <h5 class="sidebar-title">Sering Digunakan</h5>
 
-          <a
-            href="../index.php"
-            class="sidebar-item"
-           
-          >
-            <!-- <img src="../assets/img/global/grid.svg" alt=""> -->
 
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21 14H14V21H21V14Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M10 14H3V21H10V14Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M21 3H14V10H21V3Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M10 3H3V10H10V3Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            <span>Dashboard</span>
-          </a>
           
           <a href="index.php" class="sidebar-item active">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-slash" viewBox="0 0 16 16">
@@ -130,6 +86,14 @@ if(isset($_POST['tambah'])) {
             </svg>
 
             <span>Surat Keluar</span>
+          </a>
+
+          <a href="../../kpp-pajak/login.php" class="sidebar-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+              <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+            </svg>
+
+            <span>Lebih Bayar</span>
           </a>
 
           <h5 class="sidebar-title">Lainnya</h5>
@@ -184,6 +148,17 @@ if(isset($_POST['tambah'])) {
               <h2 class="nav-title">Tambah Surat Keluar</h2>
             </div>
           </div>
+          <div class="d-flex justify-content-between align-items-center nav-input-container">
+            <div class="dropdown">
+              <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
+                <?php echo $getNama["nama"]; ?>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="user-detail">
+                <li><a class="dropdown-item" href="../logout.php"><img src="../assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div class="content">
@@ -202,11 +177,30 @@ if(isset($_POST['tambah'])) {
                       <label for="jenis">Jenis Surat</label>
 
                       <div class="form-check ms-2">
-                        <input class="form-check-input" type="radio" name="s" value="<?php foreach($checkS as $data) { echo $data["MAX_Value"] + 1 ; } ?>" checked>
+                        <input class="form-check-input" type="radio" name="up" value="<?php foreach($checkUp as $data) { echo $data["MAX_Value"] + 1 ; } ?>" checked>
+                        <label class="form-check-label text-uppercase">
+                          up
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="lhpt" value="<?php foreach($checkLhpt as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
+                        <label class="form-check-label">
+                          LHPt
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="s" value="<?php foreach($checkS as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
                         <label class="form-check-label text-uppercase">
                           s
                         </label>
                       </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="verbal" value="<?php foreach($checkVerbal as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
+                        <label class="form-check-label text-uppercase">
+                          verbal
+                        </label>
+                      </div>
+                      <span class="px-4">--</span>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="kep" value="<?php foreach($checkKep as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
                         <label class="form-check-label text-uppercase">
@@ -217,12 +211,6 @@ if(isset($_POST['tambah'])) {
                         <input class="form-check-input" type="radio" name="sp" value="<?php foreach($checkSp as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
                         <label class="form-check-label text-uppercase">
                           sp
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="up" value="<?php foreach($checkUp as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
-                        <label class="form-check-label text-uppercase">
-                          up
                         </label>
                       </div>
                       <div class="form-check">
@@ -241,18 +229,6 @@ if(isset($_POST['tambah'])) {
                         <input class="form-check-input" type="radio" name="pbk_m" value="<?php foreach($checkPbkm as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
                         <label class="form-check-label text-uppercase">
                           pbkm
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="verbal" value="<?php foreach($checkVerbal as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
-                        <label class="form-check-label text-uppercase">
-                          verbal
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="lhpt" value="<?php foreach($checkLhpt as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
-                        <label class="form-check-label text-uppercase">
-                          lhpt
                         </label>
                       </div>
                     </li>

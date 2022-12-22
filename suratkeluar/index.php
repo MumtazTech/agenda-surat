@@ -7,6 +7,8 @@ if(!isset($_SESSION["login"])) {
 require '../functions.php';
 
 $suratkeluar = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip ORDER BY id DESC");
+$getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,62 +54,25 @@ $suratkeluar = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = u
 
           <h5 class="sidebar-title">Sering Digunakan</h5>
 
-          <a
-            href="../index.php"
-            class="sidebar-item"
-           
-          >
-            <!-- <img src="../assets/img/global/grid.svg" alt=""> -->
 
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21 14H14V21H21V14Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M10 14H3V21H10V14Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M21 3H14V10H21V3Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M10 3H3V10H10V3Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            <span>Dashboard</span>
-          </a>
 
           <!-- <a href="../employees.html" class="sidebar-item"> -->
           <!-- <img src="../assets/img/global/users.svg" alt=""> -->
           <a href="index.php" class="sidebar-item active">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-slash" viewBox="0 0 16 16">
-  <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
-  <path d="M14.975 10.025a3.5 3.5 0 1 0-4.95 4.95 3.5 3.5 0 0 0 4.95-4.95Zm-4.243.707a2.501 2.501 0 0 1 3.147-.318l-3.465 3.465a2.501 2.501 0 0 1 .318-3.147Zm.39 3.854 3.464-3.465a2.501 2.501 0 0 1-3.465 3.465Z"/>
-</svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-slash" viewBox="0 0 16 16">
+              <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
+              <path d="M14.975 10.025a3.5 3.5 0 1 0-4.95 4.95 3.5 3.5 0 0 0 4.95-4.95Zm-4.243.707a2.501 2.501 0 0 1 3.147-.318l-3.465 3.465a2.501 2.501 0 0 1 .318-3.147Zm.39 3.854 3.464-3.465a2.501 2.501 0 0 1-3.465 3.465Z"/>
+            </svg>
 
             <span>Surat Keluar</span>
+          </a>
+          
+          <a href="../../kpp-pajak/login.php" class="sidebar-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+              <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+            </svg>
+
+            <span>Lebih Bayar</span>
           </a>
 
           <h5 class="sidebar-title">Lainnya</h5>
@@ -162,6 +127,17 @@ $suratkeluar = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = u
               <h2 class="nav-title">Daftar Surat Keluar</h2>
             </div>
           </div>
+          <div class="d-flex justify-content-between align-items-center nav-input-container">
+            <div class="dropdown">
+              <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
+                <?php echo $getNama["nama"]; ?>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="user-detail">
+                <li><a class="dropdown-item" href="../logout.php"><img src="../assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div class="content">
@@ -207,15 +183,15 @@ $suratkeluar = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = u
                                 echo "PBKM-" . $row["pbk_m"] ."/KPP.320703/2022";
                               }
                               else if($row["verbal"] != 0) {
-                                echo "VERBAL-" . $row["verbal"] ."/KPP.320703/2022";
+                                echo "V-" . $row["verbal"] ."/KPP.320703/2022";
                               }
                               else if($row["lhpt"] != 0) {
-                                echo "LHPT-" . $row["lhpt"] ."/KPP.320703/2022";
+                                echo "LHPt-" . $row["lhpt"] ."/KPP.320703/2022";
                               }
                             ?>
                           </td>
                           <td><?php echo $row["nama"]; ?></td>
-                          <td><?php echo $row["keterangan"] ?? "-"; ?></td>
+                          <td><?php echo $row["keterangan"]; ?></td>
                           <?php if($_SESSION["nip"] == $row["nip"]) : ?>
                             <td>
                               <a href="ubah.php?id=<?php echo $row["id"]; ?>" class="btn btn-primary">Edit</a>
@@ -236,6 +212,9 @@ $suratkeluar = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = u
     </div>
 
     <script src="../js/jquery-3.5.1.js"></script>
+    <script
+      src="../js/bootstrap.bundle.min.js"
+    ></script>
     <script src="../js/jquery.dataTables.min.js"></script>
 
     <script>
@@ -248,7 +227,7 @@ $suratkeluar = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = u
             "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
             "infoEmpty": "Data belum dibuat",
             "infoFiltered": "(dicari dari _MAX_ total data)"
-          }
+          },
         });
       });
 

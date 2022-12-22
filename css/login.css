@@ -1,0 +1,14 @@
+body {
+  background: url(../assets/img/global/bg-login.png) no-repeat;
+  background-size: cover;
+  backdrop-filter: brightness(65%);
+  -webkit-backdrop-filter: brightness(65%);
+  height: 100%;
+}
+.content {
+  height: 100vh;
+}
+.box {
+  padding-top: 3em !important;
+  padding-bottom: 3em !important;
+}

@@ -82,7 +82,7 @@ function register($data) {
   }
 
   $password = password_hash($password, PASSWORD_DEFAULT);
-  mysqli_query($conn, "INSERT INTO users VALUES ('', '$nip', '$nama', '$password')");
+  mysqli_query($conn, "INSERT INTO users VALUES ('$nip', '$nama', '$password')");
 
   return mysqli_affected_rows($conn);
 }

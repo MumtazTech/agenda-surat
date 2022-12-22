@@ -1,34 +1,12 @@
 <?php 
 session_start();
 if(!isset($_SESSION["login"])) {
-  header("Location: ../login.php");
+  header("Location: login.php");
   exit;
 }
-require '../functions.php';
+require 'functions.php';
 
-$id = $_GET['id'];
-$suratkeluar = query("SELECT * FROM suratkeluar WHERE id = $id")[0];
-$getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0];
-
-date_default_timezone_set('Asia/Jakarta');
-if(isset($_POST['ubah'])) {
-  if(editSuratKeluar($_POST) > 0) {
-    echo "
-      <script>
-        alert('Surat Keluar berhasil diedit!');
-        document.location.href = 'index.php';
-      </script>
-    ";
-  } else {
-    echo "
-    <script>
-      alert('Surat Keluar gagal diedit!');
-      document.location.href = 'index.php';
-    </script>
-  ";
-  }
-}
-
+$countUser = query("SELECT count(*) as countAll FROM users")[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,24 +17,25 @@ if(isset($_POST['ubah'])) {
 
     <!-- Bootstrap CSS -->
     <link
-      href="../css/bootstrap.min.css"
+      href="css/bootstrap.min.css"
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../css/index.css" />
+    <link rel="stylesheet" href="./css/index.css" />
 
-    <title>Tambah Surat Keluar - KPP Pajak</title>
+    <title>Dashboard - KPP Pajak</title>
   </head>
 
   <body>
     <div class="screen-cover d-none d-xl-none"></div>
+
     <div class="row">
       <div class="col-12 col-lg-3 col-navbar d-none d-xl-block">
         <aside class="sidebar">
           <a href="#" class="sidebar-logo">
             <div class="d-flex justify-content-start align-items-center">
               <img
-                src="../assets/img/global/logo.png"
+                src="./assets/img/global/logo.png"
                 alt=""
                 style="width: 1.5rem"
               />
@@ -64,17 +43,61 @@ if(isset($_POST['ubah'])) {
             </div>
 
             <button id="toggle-navbar" onclick="toggleNavbar()">
-              <img src="../assets/img/global/navbar-times.svg" alt="" />
+              <img src="./assets/img/global/navbar-times.svg" alt="" />
             </button>
           </a>
 
           <h5 class="sidebar-title">Sering Digunakan</h5>
 
+          <a
+            href="index.php"
+            class="sidebar-item active"
+          >
+            <!-- <img src="./assets/img/global/grid.svg" alt=""> -->
 
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21 14H14V21H21V14Z"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M10 14H3V21H10V14Z"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M21 3H14V10H21V3Z"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M10 3H3V10H10V3Z"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
 
-          <!-- <a href="../employees.html" class="sidebar-item"> -->
-          <!-- <img src="../assets/img/global/users.svg" alt=""> -->
-          <a href="index.php" class="sidebar-item active">
+            <span>Dashboard</span>
+          </a>
+
+          <!-- <a href="./employees.html" class="sidebar-item"> -->
+          <!-- <img src="./assets/img/global/users.svg" alt=""> -->
+          <a href="suratkeluar/index.php" class="sidebar-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-slash" viewBox="0 0 16 16">
               <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
               <path d="M14.975 10.025a3.5 3.5 0 1 0-4.95 4.95 3.5 3.5 0 0 0 4.95-4.95Zm-4.243.707a2.501 2.501 0 0 1 3.147-.318l-3.465 3.465a2.501 2.501 0 0 1 .318-3.147Zm.39 3.854 3.464-3.465a2.501 2.501 0 0 1-3.465 3.465Z"/>
@@ -82,10 +105,11 @@ if(isset($_POST['ubah'])) {
 
             <span>Surat Keluar</span>
           </a>
-
-          <a href="../../kpp-pajak/login.php" class="sidebar-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
-              <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+          
+          <a href="../kpp-pajak/login.php" class="sidebar-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-slash" viewBox="0 0 16 16">
+              <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
+              <path d="M14.975 10.025a3.5 3.5 0 1 0-4.95 4.95 3.5 3.5 0 0 0 4.95-4.95Zm-4.243.707a2.501 2.501 0 0 1 3.147-.318l-3.465 3.465a2.501 2.501 0 0 1 .318-3.147Zm.39 3.854 3.464-3.465a2.501 2.501 0 0 1-3.465 3.465Z"/>
             </svg>
 
             <span>Lebih Bayar</span>
@@ -93,8 +117,8 @@ if(isset($_POST['ubah'])) {
 
           <h5 class="sidebar-title">Lainnya</h5>
 
-          <a href="../logout.php" class="sidebar-item">
-            <!-- <img src="../assets/img/global/log-out.svg" alt=""> -->
+          <a href="logout.php" class="sidebar-item">
+            <!-- <img src="./assets/img/global/log-out.svg" alt=""> -->
 
             <svg
               width="24"
@@ -138,19 +162,19 @@ if(isset($_POST['ubah'])) {
           >
             <div class="d-flex justify-content-start align-items-center">
               <button id="toggle-navbar" onclick="toggleNavbar()">
-                <img src="../assets/img/global/burger.svg" class="mb-2" alt="" />
+                <img src="./assets/img/global/burger.svg" class="mb-2" alt="" />
               </button>
-              <h2 class="nav-title">Edit Surat Keluar</h2>
+              <h2 class="nav-title">Dashboard</h2>
             </div>
           </div>
           <div class="d-flex justify-content-between align-items-center nav-input-container">
             <div class="dropdown">
-              <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
-                <?php echo $getNama["nama"]; ?>
+              <button class="btn-notif d-none d-md-flex flex-nowrap" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="./assets/img/home/history/photo-1.png" alt="" class="me-2">
+                <?php echo $fetch["nama"]; ?>
               </button>
               <ul class="dropdown-menu" aria-labelledby="user-detail">
-                <li><a class="dropdown-item" href="../logout.php"><img src="../assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
+                <li><a class="dropdown-item" href="logout.php"><img src="assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
               </ul>
             </div>
           </div>
@@ -158,40 +182,19 @@ if(isset($_POST['ubah'])) {
 
         <div class="content">
           <div class="row">
-            <div class="col-12">
-              <div class="statistics-card">
-                <form action="" method="post">
-                  <ul class="list-unstyled d-flex flex-column gap-3">
-                    <input type="hidden" name="id" value="<?= $suratkeluar['id']; ?>">
-                    <li>
-                      <div class="form-group">
-                        <label for="tgl_surat">Tanggal Surat</label>
-                        <input type="text" class="form-control" name="tgl_surat" value="<?php $date = date_create("TODAY"); echo date_format($date, "d M Y"); ?>" readonly>
-                      </div>
-                    </li>
-                    <li>
-                      <label for="keterangan">Keterangan</label>
-                      <textarea name="keterangan" rows="10" class="form-control" style="resize:none;"><?php echo $suratkeluar["keterangan"]; ?></textarea>
-                    </li>
-                    <li>
-                      <button type="submit" name="ubah" class="btn btn-primary">Edit</button>
-                      <a href="index.php" class="btn btn-light ms-2">Kembali</a>
-                    </li>
-                  </ul>
-                </form>
-              </div>
-            </div>
+            <h4>Data Tidak Ada!</h4>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="../js/jquery-3.5.1.js"></script>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
     <script>
-      $(document).on('click', 'input[type="radio"]', function() {      
-        $('input[type="radio"]').not(this).prop('checked', false);      
-      });
+
       const navbar = document.querySelector(".col-navbar");
       const cover = document.querySelector(".screen-cover");
 
@@ -203,5 +206,6 @@ if(isset($_POST['ubah'])) {
       }
       
     </script>
+
   </body>
 </html>
