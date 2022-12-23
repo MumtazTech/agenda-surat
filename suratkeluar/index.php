@@ -183,7 +183,7 @@ if(isset($_POST['save'])) {
                     Tambah Surat Keluar <img src="../assets/img/global/times.svg" class="ms-1" alt="" />
                   </a>
                   <a href="ekspor.php" class="btn btn-secondary mb-4">
-                    Ekspor Tabel <img src="../assets/img/global/right-arrow.svg" class="ms-1" alt="" />
+                    Ekspor Ke Excel <img src="../assets/img/global/right-arrow.svg" class="ms-1" alt="" />
                   </a>
                 </div>
                 <table border="1" cellpadding="10" cellspacing="0" class="table table-striped table-hover rounded" id="table">
@@ -239,7 +239,7 @@ if(isset($_POST['save'])) {
                                 <a href="ubah.php?id=<?php echo $row["id"]; ?>" class="btn btn-primary">Edit</a>
                               </td>
                             <?php else : ?>
-                              <td>Hanya <?php echo $row["nama"]; ?> yang dapat mengedit</td>
+                              <td><button disabled="disabled" class="btn btn-secondary">Edit</button></td>
                             <?php endif; ?>
                           <?php endif; ?>
                         </tr>
