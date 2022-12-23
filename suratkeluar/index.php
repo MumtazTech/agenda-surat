@@ -1,14 +1,28 @@
 <?php 
 session_start();
-if(!isset($_SESSION["login"])) {
-  header("Location: ../login.php");
-  exit;
-}
 require '../functions.php';
 
 $suratkeluar = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip ORDER BY id DESC");
-$getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0];
+if(isset($_POST['save'])) {
+  $op = $_POST['op'];
+  $np = $_POST['np'];
+  $cnp = $_POST['c_np'];
 
+  $queryCheck = mysqli_query($conn, "SELECT * FROM users WHERE nip = " . $_SESSION['nip']);
+  $result = mysqli_fetch_assoc($queryCheck);
+
+  if(password_verify($op, $result["password"])) {
+    if($np == $cnp) {
+      $sql = "UPDATE users SET password = '" . password_hash($np, PASSWORD_DEFAULT) . "' WHERE nip = " . $_SESSION['nip'];
+      mysqli_query($conn, $sql);
+      echo "<script>alert('Passwordmu berhasil diganti')</script>";
+    } else {
+      echo "<script>alert('Passwordmu tidak sama')</script>";
+    }
+  } else {
+    echo "<script>alert('Passwordmu salah')</script>";
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,41 +91,52 @@ $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users
 
           <h5 class="sidebar-title">Lainnya</h5>
 
-          <a href="../logout.php" class="sidebar-item">
-            <!-- <img src="../assets/img/global/log-out.svg" alt=""> -->
+          <?php if(isset($_SESSION['login'])) : ?>
+            <a href="../logout.php" class="sidebar-item">
+              <!-- <img src="../assets/img/global/log-out.svg" alt=""> -->
 
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 17L21 12L16 7"
-                stroke="#ABB3C4"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M21 12H9"
-                stroke="#ABB3C4"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
-                stroke="#ABB3C4"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16 17L21 12L16 7"
+                  stroke="#ABB3C4"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M21 12H9"
+                  stroke="#ABB3C4"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
+                  stroke="#ABB3C4"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
 
-            <span>Logout</span>
-          </a>
+              <span>Logout</span>
+            </a>
+          <?php else : ?>
+            <a href="../login.php" class="sidebar-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+                <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+              </svg>
+
+              <span>Login</span>
+            </a>
+          <?php endif; ?>
         </aside>
       </div>
 
@@ -127,17 +152,25 @@ $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users
               <h2 class="nav-title">Daftar Surat Keluar</h2>
             </div>
           </div>
-          <div class="d-flex justify-content-between align-items-center nav-input-container">
-            <div class="dropdown">
-              <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
-                <?php echo $getNama["nama"]; ?>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="user-detail">
-                <li><a class="dropdown-item" href="../logout.php"><img src="../assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
-              </ul>
+          <?php if(isset($_SESSION['login'])) : ?>
+            <div class="d-flex justify-content-between align-items-center nav-input-container">
+              <div class="dropdown">
+                <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
+                  <?php $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0]; echo $getNama["nama"]; ?>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="user-detail">
+                  <li>
+                    <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePwModal">
+                      Ganti Password
+                    </button>
+                  </li>
+                  <hr>
+                  <li><a class="dropdown-item" href="../logout.php"><img src="../assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
+                </ul>
+              </div>
             </div>
-          </div>
+          <?php endif; ?>
         </div>
 
         <div class="content">
@@ -154,7 +187,9 @@ $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users
                     <th>Format</th>
                     <th>Nama</th>
                     <th>Keterangan</th>
-                    <th>Edit</th>
+                    <?php if(isset($_SESSION['login'])) : ?>
+                      <th>Edit</th>
+                    <?php endif; ?>
                   </thead>
                   <tbody>
                     <?php $i = 1; ?>
@@ -192,12 +227,14 @@ $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users
                           </td>
                           <td><?php echo $row["nama"]; ?></td>
                           <td><?php echo $row["keterangan"]; ?></td>
-                          <?php if($_SESSION["nip"] == $row["nip"]) : ?>
-                            <td>
-                              <a href="ubah.php?id=<?php echo $row["id"]; ?>" class="btn btn-primary">Edit</a>
-                            </td>
-                          <?php else : ?>
-                            <td>Hanya <?php echo $row["nama"]; ?> yang dapat mengedit</td>
+                          <?php if(isset($_SESSION['login'])) : ?>
+                            <?php if($_SESSION["nip"] == $row["nip"]) : ?>
+                              <td>
+                                <a href="ubah.php?id=<?php echo $row["id"]; ?>" class="btn btn-primary">Edit</a>
+                              </td>
+                            <?php else : ?>
+                              <td>Hanya <?php echo $row["nama"]; ?> yang dapat mengedit</td>
+                            <?php endif; ?>
                           <?php endif; ?>
                         </tr>
                         <?php $i++; ?>
@@ -207,6 +244,38 @@ $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Change PW Modal -->
+    <div class="modal fade" id="changePwModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ganti Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="" method="post">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Password Lama</label>
+                <input type="password" class="form-control" name="op">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password Baru</label>
+                <input type="password" class="form-control" name="np">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Konfirmasi Password Baru</label>
+                <input type="password" class="form-control" name="c_np">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-success" name="save">Simpan</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -28,6 +28,26 @@ if(isset($_POST['ubah'])) {
   ";
   }
 }
+if(isset($_POST['save'])) {
+  $op = $_POST['op'];
+  $np = $_POST['np'];
+  $cnp = $_POST['c_np'];
+
+  $queryCheck = mysqli_query($conn, "SELECT * FROM users WHERE nip = " . $_SESSION['nip']);
+  $result = mysqli_fetch_assoc($queryCheck);
+
+  if(password_verify($op, $result["password"])) {
+    if($np == $cnp) {
+      $sql = "UPDATE users SET password = '" . password_hash($np, PASSWORD_DEFAULT) . "' WHERE nip = " . $_SESSION['nip'];
+      mysqli_query($conn, $sql);
+      echo "<script>alert('Passwordmu berhasil diganti')</script>";
+    } else {
+      echo "<script>alert('Passwordmu tidak sama')</script>";
+    }
+  } else {
+    echo "<script>alert('Passwordmu salah')</script>";
+  }
+}
 
 ?>
 <!DOCTYPE html>
@@ -144,14 +164,22 @@ if(isset($_POST['ubah'])) {
             </div>
           </div>
           <div class="d-flex justify-content-between align-items-center nav-input-container">
-            <div class="dropdown">
-              <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
-                <?php echo $getNama["nama"]; ?>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="user-detail">
-                <li><a class="dropdown-item" href="../logout.php"><img src="../assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
-              </ul>
+<div class="d-flex justify-content-between align-items-center nav-input-container">
+              <div class="dropdown">
+                <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
+                  <?php $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0]; echo $getNama["nama"]; ?>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="user-detail">
+                  <li>
+                    <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePwModal">
+                      Ganti Password
+                    </button>
+                  </li>
+                  <hr>
+                  <li><a class="dropdown-item" href="../logout.php"><img src="../assets/img/global/log-out.svg" alt="logout" class="me-2"> Logout</a></li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -186,7 +214,40 @@ if(isset($_POST['ubah'])) {
       </div>
     </div>
 
+    <!-- Change PW Modal -->
+    <div class="modal fade" id="changePwModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ganti Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="" method="post">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Password Lama</label>
+                <input type="password" class="form-control" name="op">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password Baru</label>
+                <input type="password" class="form-control" name="np">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Konfirmasi Password Baru</label>
+                <input type="password" class="form-control" name="c_np">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-success" name="save">Simpan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script src="../js/jquery-3.5.1.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 
     <script>
       $(document).on('click', 'input[type="radio"]', function() {      

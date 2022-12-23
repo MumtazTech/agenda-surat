@@ -13,11 +13,6 @@ if(isset($_COOKIE["id"]) && isset($_COOKIE["key"])) {
   }
 }
 
-if(isset($_SESSION["login"])) {
-  header("Location: suratkeluar/index.php");
-  exit;
-}
-
 if(isset($_POST["login"])) {
   $nip = $_POST["nip"];
   $password = $_POST["password"];
@@ -34,7 +29,7 @@ if(isset($_POST["login"])) {
       }
       
       $_SESSION["nip"] = $nip;
-      header("Location: suratkeluar/index.php");
+      header("Location: suratkeluar/tambah.php");
       exit;
     }
   }
@@ -82,6 +77,7 @@ if(isset($_POST["login"])) {
           </div>
           <div class="d-grid gap-2 mb-3">
             <button type="submit" name="login" class="btn btn-dark border-0 py-3 mt-3 rounded-0">Login</button>
+            <a href="suratkeluar/index.php" class="btn btn-secondary border-0 py-3 rounded-0">Kembali</a>
           </div>
         </form>
       </div>
