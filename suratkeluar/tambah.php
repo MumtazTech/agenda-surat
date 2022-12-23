@@ -15,7 +15,6 @@ $checkNd = query("SELECT MAX(nd) As 'MAX_Value' FROM suratkeluar");
 $checkPbkm = query("SELECT MAX(pbk_m) As 'MAX_Value' FROM suratkeluar");
 $checkVerbal = query("SELECT MAX(verbal) As 'MAX_Value' FROM suratkeluar");
 $checkLhpt = query("SELECT MAX(lhpt) As 'MAX_Value' FROM suratkeluar");
-$getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0];
 
 date_default_timezone_set('Asia/Jakarta');
 if(isset($_POST['tambah'])) {
@@ -174,7 +173,7 @@ if(isset($_POST['save'])) {
               <div class="dropdown">
                 <button class="btn-notif d-none d-md-flex flex-nowrap text-capitalize" type="button" id="user-detail" data-bs-toggle="dropdown" aria-expanded="false">
                   <img src="../assets/img/home/history/photo-1.png" alt="" class="me-2">
-                  <?php $getNama = query("SELECT * FROM suratkeluar, users WHERE suratkeluar.nip = users.nip AND users.nip = " . $_SESSION["nip"])[0]; echo $getNama["nama"]; ?>
+                  <?php $getNama = query("SELECT * FROM users WHERE nip = " . $_SESSION["nip"])[0]; echo $getNama["nama"]; ?>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="user-detail">
                   <li>
