@@ -173,6 +173,7 @@ if(isset($_POST['save'])) {
                 <ul class="dropdown-menu" aria-labelledby="user-detail">
                   <li>
                     <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePwModal">
+                      <img src="../assets/img/global/lock.svg" class="me-2">
                       Ganti Password
                     </button>
                   </li>

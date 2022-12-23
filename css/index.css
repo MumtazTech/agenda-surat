@@ -142,8 +142,6 @@ aside #toggle-navbar {
   }
 }
 .nav .btn-notif {
-  width: 46px;
-  height: 46px;
   background: #fff;
   border-radius: 50%;
   margin-left: 20px;
@@ -152,12 +150,6 @@ aside #toggle-navbar {
   width: 24px;
   height: 24px;
 }
-@media (min-width: 992px) {
-  .nav .btn-notif {
-    width: 52px;
-  }
-}
-
 .nav-title {
   font-weight: 600;
   font-size: 32px;

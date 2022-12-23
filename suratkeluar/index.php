@@ -162,6 +162,7 @@ if(isset($_POST['save'])) {
                 <ul class="dropdown-menu" aria-labelledby="user-detail">
                   <li>
                     <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePwModal">
+                      <img src="../assets/img/global/lock.svg" class="me-2">
                       Ganti Password
                     </button>
                   </li>
@@ -177,9 +178,14 @@ if(isset($_POST['save'])) {
           <div class="row">
             <div class="col-12">
               <div class="statistics-card">
-                <a href="tambah.php" class="btn mb-4" style="background-color: #fcc100 !important; color:white;">
-                  Tambah Surat Keluar <img src="../assets/img/global/times.svg" class="ml-3" alt="" />
-                </a>
+                <div class="d-flex items-center justify-content-between">
+                  <a href="tambah.php" class="btn mb-4" style="background-color: #fcc100 !important; color:white;">
+                    Tambah Surat Keluar <img src="../assets/img/global/times.svg" class="ms-1" alt="" />
+                  </a>
+                  <a href="ekspor.php" class="btn btn-secondary mb-4">
+                    Ekspor Tabel <img src="../assets/img/global/right-arrow.svg" class="ms-1" alt="" />
+                  </a>
+                </div>
                 <table border="1" cellpadding="10" cellspacing="0" class="table table-striped table-hover rounded" id="table">
                   <thead>
                     <th>No</th>
