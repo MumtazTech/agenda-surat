@@ -191,7 +191,7 @@ if(isset($_POST['save'])) {
                     <th>No</th>
                     <th>Tanggal Surat</th>
                     <th>Format</th>
-                    <th>Nama</th>
+                    <th>Nama Pembuat</th>
                     <th>Keterangan</th>
                     <?php if(isset($_SESSION['login'])) : ?>
                       <th>Edit</th>

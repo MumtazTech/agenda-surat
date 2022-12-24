@@ -206,7 +206,7 @@ if(isset($_POST['save'])) {
                       <label for="jenis">Jenis Surat</label>
 
                       <div class="form-check ms-2">
-                        <input class="form-check-input" type="radio" name="up" value="<?php foreach($checkUp as $data) { echo $data["MAX_Value"] + 1 ; } ?>" checked>
+                        <input class="form-check-input" type="radio" name="up" value="<?php foreach($checkUp as $data) { echo $data["MAX_Value"] + 1 ; } ?>">
                         <label class="form-check-label text-uppercase">
                           up
                         </label>
@@ -315,8 +315,18 @@ if(isset($_POST['save'])) {
 
     <script>
       $(document).on('click', 'input[type="radio"]', function() {      
-        $('input[type="radio"]').not(this).prop('checked', false);      
+        $('input[type="radio"]').not(this).prop('checked', false);
       });
+      
+      $('input[name="up"]').bind('click', function() { $("textarea").html("Uraian Penelitian a.n ") });
+      $('input[name="lhpt"]').bind('click', function() { $("textarea").html("Laporan Hasil Penelitian a.n ") });
+      $('input[name="s"]').bind('click', function() { $("textarea").html("Surat a.n ") });
+      $('input[name="verbal"]').bind('click', function() { $("textarea").html("Verbal a.n ") });
+      $('input[name="kep"]').bind('click', function() { $("textarea").html("Keputusan a.n ") });
+      $('input[name="sp"]').bind('click', function() { $("textarea").html("Surat Perintah a.n ") });
+      $('input[name="ba"]').bind('click', function() { $("textarea").html("Berita Acara a.n ") });
+      $('input[name="nd"]').bind('click', function() { $("textarea").html("Nota Dinas a.n ") });
+
       const navbar = document.querySelector(".col-navbar");
       const cover = document.querySelector(".screen-cover");
 
