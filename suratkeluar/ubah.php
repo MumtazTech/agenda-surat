@@ -198,6 +198,65 @@ if(isset($_POST['save'])) {
                         <input type="text" class="form-control" name="tgl_surat" value="<?php $date = date_create("TODAY"); echo date_format($date, "d M Y"); ?>" readonly>
                       </div>
                     </li>
+                    <li class="d-flex gap-2">
+                      <label for="jenis">Jenis Surat</label>
+
+                      <div class="form-check ms-2">
+                        <input class="form-check-input" type="radio" name="up" <?php if($suratkeluar['up'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          up
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="lhpt" <?php if($suratkeluar['lhpt'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label">
+                          LHPt
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="s" <?php if($suratkeluar['s'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          s
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="verbal" <?php if($suratkeluar['verbal'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          verbal
+                        </label>
+                      </div>
+                      <span class="px-4">--</span>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="kep" <?php if($suratkeluar['kep'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          kep
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sp" <?php if($suratkeluar['sp'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          sp
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="ba" <?php if($suratkeluar['ba'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          ba
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="nd" <?php if($suratkeluar['nd'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          nd
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="pbk_m" <?php if($suratkeluar['pbk_m'] != 0) echo 'checked'?> disabled>
+                        <label class="form-check-label text-uppercase">
+                          pbkm
+                        </label>
+                      </div>
+                    </li>
                     <li>
                       <label for="keterangan">Keterangan</label>
                       <textarea name="keterangan" rows="10" class="form-control" style="resize:none;"><?php echo $suratkeluar["keterangan"]; ?></textarea>
